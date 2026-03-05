@@ -12,3 +12,15 @@ def get_failure_reasons():
 
 def get_why_learning_based():
     # TODO: 학습 기반 접근법 필요성 서술 (한국어, 30~200자)
+
+
+def compare_methods(predictions_base, predictions_aug, labels):
+    # TODO: 기본 vs 증강 방식의 카테고리별 MAE/Accuracy 비교
+
+
+def create_detection_log(predictions, labels, date_str):
+    # TODO: 일자별 검출 로그 생성 (date, total_images, results, daily_accuracy)
+
+
+def generate_weekly_report(daily_logs):
+    # TODO: 주간 요약 보고서 생성 (week_start/end, total_images_processed, average_daily_accuracy, best/worst_day)

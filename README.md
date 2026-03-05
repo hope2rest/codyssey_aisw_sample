@@ -6,7 +6,7 @@ AI/SW 심화 시험 — pytest 기반 자동 채점 멀티 모듈 프로젝트
 
 ### Q1. 이미지 기반 객체 카운팅 (CV)
 
-제공되는 이미지(easy/medium/hard 각 5장)에서 규칙 기반 파이프라인으로 박스 개수를 카운팅하고, 카테고리별 성능 지표를 산출한 뒤 규칙 기반 방식의 한계를 분석하는 문제입니다.
+제공되는 이미지(easy/medium/hard 각 5장)에서 규칙 기반 파이프라인으로 박스 개수를 카운팅하고, 데이터 증강 앙상블로 정확도를 개선한 뒤, 객체 검출 결과를 일주일 단위로 관리하는 일지 시스템을 구축하는 문제입니다.
 
 학생은 4개의 Python 모듈과 결과 JSON 파일, 총 5개 파일을 제출합니다.
 
@@ -43,7 +43,7 @@ codyssey_aisw_sample/
     │   │   └── result_q1.json
     │   └── tests/
     │       ├── conftest.py         # submission_dir fixture
-    │       └── test_q1_cv.py       # 11개 테스트
+    │       └── test_q1_cv.py       # 22개 테스트
     └── intro/level1/mission01/     # Q1 MAC 스코어러
         ├── problem.md              # 문제지 (학생 배포용)
         ├── solution.md             # 정답지 (출제자 보관용)
@@ -64,11 +64,11 @@ codyssey_aisw_sample/
 
 | 파일 | 역할 |
 |------|------|
-| `conv2d.py` | NumPy만으로 2D 컨볼루션을 구현하고, 그레이스케일 변환 및 Sobel 엣지 검출을 수행 |
-| `counter.py` | `conv2d.py`를 import하여 이미지 로드 → 엣지 검출 → 이진화 → Connected Component 분석 → 최소 면적 필터로 박스 개수를 카운팅 |
-| `metrics.py` | 카테고리별 MAE/Accuracy 계산, worst case 탐색, 규칙 기반 실패 원인 및 학습 기반 접근법 필요성 서술 |
-| `main.py` | `counter.py`와 `metrics.py`를 import하여 전체 파이프라인을 실행하고 `result_q1.json`을 생성 |
-| `result_q1.json` | 예측 결과, 카테고리별 메트릭, worst case, 실패 원인, 학습 기반 필요성을 담은 최종 출력 |
+| `conv2d.py` | NumPy 2D 컨볼루션, 그레이스케일 변환, Sobel 엣지 검출, 이미지 증강(좌우/상하 반전, 밝기 조절, 정규화) |
+| `counter.py` | 기본 박스 카운팅, 증강 앙상블 카운팅, 바운딩 박스 좌표 추출 |
+| `metrics.py` | MAE/Accuracy 계산, worst case 탐색, 기본 vs 증강 비교, 일자별 검출 로그, 주간 보고서, 한계 분석 |
+| `main.py` | 전체 파이프라인 실행 (카운팅 → 증강 → 비교 → 주간 일지 → JSON 저장) |
+| `result_q1.json` | 예측, 증강 예측, 바운딩 박스, 메트릭, 방법 비교, 주간 보고서, 한계 분석 |
 
 ### Intro — MAC 스코어러
 
@@ -78,19 +78,30 @@ codyssey_aisw_sample/
 
 ## 테스트 구성
 
-### CV (11개)
+### CV (22개)
 
 | 분류 | 테스트 | 내용 |
 |------|--------|------|
-| 구조 검증 | `test_conv2d_functions` | conv2d.py 필수 함수 3개 정의 (AST) |
+| 구조 검증 | `test_conv2d_functions` | conv2d.py 필수 함수 7개 정의 (AST) |
 | 구조 검증 | `test_no_filter2d` | cv2.filter2D 미사용 확인 |
+| 구조 검증 | `test_counter_functions` | counter.py 필수 함수 4개 + THRESHOLD/MIN_AREA |
+| 구조 검증 | `test_metrics_functions` | metrics.py 필수 함수 7개 정의 (AST) |
 | 기능 검증 | `test_conv2d_identity` | identity 커널 conv2d 결과 |
 | 기능 검증 | `test_conv2d_sobel` | Sobel 커널 적용 결과 |
 | 기능 검증 | `test_grayscale` | 그레이스케일 변환 정확도 |
-| 기능 검증 | `test_counter_functions` | count_boxes, THRESHOLD, MIN_AREA 정의 확인 |
+| 기능 검증 | `test_flip_operations` | 좌우/상하 반전 검증 |
+| 기능 검증 | `test_brightness_and_normalize` | 밝기 조절 및 Min-Max 정규화 |
+| 기능 검증 | `test_ensemble_count` | 중앙값 기반 앙상블 카운팅 |
+| 기능 검증 | `test_count_boxes_augmented` | 증강 앙상블 카운팅 정수 반환 |
+| 기능 검증 | `test_bounding_boxes_format` | 바운딩 박스 출력 형식 |
 | 기능 검증 | `test_compute_metrics` | MAE/Accuracy 계산 정확도 |
 | 기능 검증 | `test_find_worst_case` | worst case 이미지 탐색 |
+| 기능 검증 | `test_compare_methods` | 기본 vs 증강 성능 비교 |
+| 기능 검증 | `test_detection_log_and_weekly_report` | 검출 로그 및 주간 보고서 |
 | 결과 검증 | `test_valid_images_only` | 유효 이미지만 분석 (test_01 제외) |
+| 결과 검증 | `test_augmented_predictions` | 증강 카운팅 결과 포함 |
+| 결과 검증 | `test_method_comparison` | 방법 비교 결과 포함 |
+| 결과 검증 | `test_weekly_report` | 주간 보고서 결과 포함 |
 | 결과 검증 | `test_failure_reasons` | 실패 원인 3개 이상, 한국어, 20자+ |
 | 결과 검증 | `test_why_learning_based` | 학습 기반 필요성 30~200자, 한국어 |
 

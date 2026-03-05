@@ -1,6 +1,9 @@
-"""metrics.py — 성능 지표 계산 및 한계 분석 모듈"""
+"""metrics.py — 성능 지표, 방법 비교, 검출 일지 관리 모듈"""
 
 import numpy as np
+
+
+# ─── Part C: 정량적 성능 분석 ───
 
 
 def compute_metrics(predictions, labels, category):
@@ -47,3 +50,74 @@ def get_why_learning_based():
         "CNN 등 학습 기반 모델은 대규모 데이터로부터 특징을 자동 학습하여 "
         "다양한 환경에서도 강인한 객체 탐지가 가능하다."
     )
+
+
+# ─── Part D: 방법 비교 분석 ───
+
+
+def compare_methods(predictions_base, predictions_aug, labels):
+    """기본 vs 증강 방식의 카테고리별 성능 비교."""
+    categories = ["easy", "medium", "hard"]
+    comparison = {}
+    for cat in categories:
+        base = compute_metrics(predictions_base, labels, cat)
+        aug = compute_metrics(predictions_aug, labels, cat)
+        comparison[cat] = {
+            "base_mae": base["mae"],
+            "augmented_mae": aug["mae"],
+            "mae_improvement": round(base["mae"] - aug["mae"], 4),
+            "base_accuracy": base["accuracy"],
+            "augmented_accuracy": aug["accuracy"],
+        }
+    return comparison
+
+
+# ─── Part E: 객체 검출 일지 관리 ───
+
+
+def create_detection_log(predictions, labels, date_str):
+    """일자별 검출 로그 생성."""
+    log = {
+        "date": date_str,
+        "total_images": len(predictions),
+        "results": [],
+    }
+    for name in sorted(predictions.keys()):
+        pred = predictions[name]
+        actual = labels.get(name, 0)
+        log["results"].append({
+            "image": name,
+            "predicted": pred,
+            "actual": actual,
+            "error": abs(pred - actual),
+            "correct": pred == actual,
+        })
+    correct_count = sum(1 for r in log["results"] if r["correct"])
+    log["daily_accuracy"] = round(
+        correct_count / len(log["results"]), 4
+    ) if log["results"] else 0.0
+    return log
+
+
+def generate_weekly_report(daily_logs):
+    """주간 단위 요약 보고서 생성."""
+    if not daily_logs:
+        return {}
+
+    dates = [log["date"] for log in daily_logs]
+    total_images = sum(log["total_images"] for log in daily_logs)
+    all_accuracies = [log["daily_accuracy"] for log in daily_logs]
+    avg_accuracy = round(sum(all_accuracies) / len(all_accuracies), 4)
+
+    best_day = dates[all_accuracies.index(max(all_accuracies))]
+    worst_day = dates[all_accuracies.index(min(all_accuracies))]
+
+    return {
+        "week_start": min(dates),
+        "week_end": max(dates),
+        "total_images_processed": total_images,
+        "average_daily_accuracy": avg_accuracy,
+        "best_day": best_day,
+        "worst_day": worst_day,
+        "daily_accuracies": dict(zip(dates, all_accuracies)),
+    }
