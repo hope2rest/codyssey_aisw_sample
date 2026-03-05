@@ -1,4 +1,4 @@
-## 문제 3: 이미지 기반 객체 카운팅
+## 문제 1: 이미지 기반 객체 카운팅
 
 ### [ 문제 ]
 
@@ -68,7 +68,7 @@
 
 9. **`main()` 함수를 구현하시오.**
    - `labels.json` 로드 → 유효 이미지 필터 → 카운팅 → 메트릭 계산 → JSON 출력
-   - `result_q3.json` 파일로 결과를 저장하시오.
+   - `result_q1.json` 파일로 결과를 저장하시오.
 
 ---
 
@@ -91,7 +91,7 @@
 
 ### [ 출력 형식 ]
 
-`result_q3.json` 파일로 다음 구조를 저장하시오:
+`result_q1.json` 파일로 다음 구조를 저장하시오:
 
 ```json
 {
@@ -136,7 +136,7 @@ submission.zip
 │   └── main()                    — labels 로드 → 카운팅 → 메트릭 → JSON 저장
 │       (counter.py, metrics.py를 import하여 사용)
 │
-└── result_q3.json      # 실행 결과
+└── result_q1.json      # 실행 결과
     ├── predictions                — 이미지별 예측 박스 개수
     ├── metrics                    — easy/medium/hard별 MAE, Accuracy
     ├── worst_case_image           — 최대 오차 이미지 이름

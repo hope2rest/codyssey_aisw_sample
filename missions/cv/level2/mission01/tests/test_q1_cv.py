@@ -1,8 +1,8 @@
 """
-Q3 CV — pytest 검증 (11개 테스트, 전체 통과 시 합격)
+Q1 CV — pytest 검증 (11개 테스트, 전체 통과 시 합격)
 
 검증 방식: AST 구조 분석 + importlib 모듈 import 후 기능 검증
-제출물: conv2d.py, counter.py, metrics.py, main.py, result_q3.json (5파일)
+제출물: conv2d.py, counter.py, metrics.py, main.py, result_q1.json (5파일)
 """
 import ast
 import importlib
@@ -177,17 +177,17 @@ class TestMetrics:
 
 
 # ========================================================================
-# TestResult — result_q3.json 결과 검증 (3개)
+# TestResult — result_q1.json 결과 검증 (3개)
 # ========================================================================
 
 
 class TestResult:
-    """result_q3.json 최종 결과 검증"""
+    """result_q1.json 최종 결과 검증"""
 
     @staticmethod
     def _load_result():
-        path = os.path.join(_SUBMISSION_DIR, "result_q3.json")
-        assert os.path.isfile(path), f"result_q3.json 없음: {path}"
+        path = os.path.join(_SUBMISSION_DIR, "result_q1.json")
+        assert os.path.isfile(path), f"result_q1.json 없음: {path}"
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
 

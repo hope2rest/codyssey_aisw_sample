@@ -10,7 +10,7 @@ from metrics import compute_metrics, find_worst_case, get_failure_reasons, get_w
 DATA_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.join(DATA_DIR, "data", "images")
 LABELS_FILE = os.path.join(DATA_DIR, "data", "labels.json")
-OUTPUT_FILE = os.path.join(DATA_DIR, "result_q3.json")
+OUTPUT_FILE = os.path.join(DATA_DIR, "result_q1.json")
 
 
 def main():

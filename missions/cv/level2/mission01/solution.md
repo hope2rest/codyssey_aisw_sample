@@ -1,4 +1,4 @@
-## 문항 3 정답지 — 이미지 기반 객체 카운팅
+## 문항 1 정답지 — 이미지 기반 객체 카운팅
 
 ### 정답 파일 구성
 
@@ -7,8 +7,8 @@
 | `conv2d.py` | NumPy stride_tricks 기반 conv2d, Sobel 엣지 검출, 그레이스케일 변환 |
 | `counter.py` | PIL 이미지 로드, 이진화, scipy connected component, min_area 필터 |
 | `metrics.py` | MAE/Accuracy 계산, worst case 탐색, 실패 원인 분석 텍스트 |
-| `main.py` | labels.json 로드, 유효 이미지 필터, 파이프라인 실행, result_q3.json 저장 |
-| `result_q3.json` | 전체 실행 결과 |
+| `main.py` | labels.json 로드, 유효 이미지 필터, 파이프라인 실행, result_q1.json 저장 |
+| `result_q1.json` | 전체 실행 결과 |
 
 ### 정답 체크리스트
 
