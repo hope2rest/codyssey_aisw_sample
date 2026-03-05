@@ -125,10 +125,11 @@
 
 ### [ 제출물 구조 ]
 
-아래 **5개 파일**을 제출하시오.
+아래 **5개 파일**을 하나의 **zip 파일**로 묶어 제출하시오.
 
 ```
-submission/
+submission.zip
+└── submission/
 ├── conv2d.py           # Part A: 2D 컨볼루션 및 엣지 검출
 │   ├── conv2d()                  — NumPy 기반 2D 컨볼루션 (valid 모드)
 │   ├── to_grayscale()            — RGB → 그레이스케일 변환
