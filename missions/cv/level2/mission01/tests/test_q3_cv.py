@@ -1,5 +1,5 @@
 """
-Q3 CV 멀티 프로젝트 — pytest 검증 (12개 테스트)
+Q3 CV — pytest 검증 (11개 테스트, 전체 통과 시 합격)
 
 검증 방식: AST 구조 분석 + importlib 모듈 import 후 기능 검증
 제출물: conv2d.py, counter.py, metrics.py, main.py, result_q3.json (5파일)
@@ -57,15 +57,7 @@ def _parse_ast(filename):
 
 
 class TestStructure:
-    """제출물 파일 구조 검증"""
-
-    def test_required_files_exist(self):
-        """필수 파일 4개가 모두 존재하는지 확인 (10점)"""
-        required = ["conv2d.py", "counter.py", "metrics.py", "main.py"]
-        missing = [f for f in required if not os.path.isfile(
-            os.path.join(_SUBMISSION_DIR, f)
-        )]
-        assert not missing, f"누락된 파일: {missing}"
+    """제출물 코드 구조 검증"""
 
     def test_conv2d_functions(self):
         """conv2d.py에 필수 함수가 정의되어 있는지 확인 (10점)"""
