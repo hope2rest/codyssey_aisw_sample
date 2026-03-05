@@ -8,7 +8,7 @@
 
 | 키 | 타입 | 내용 |
 |----|------|------|
-| `patterns` | `dict[str, list[list[int]]]` | 판별 대상 이미지 3개 (`img_01`, `img_02`, `img_03`), 각 3×3 정수 배열 |
+| `patterns` | `dict[str, list[list[int]]]` | 매칭 대상 이미지 3개 (`img_01`, `img_02`, `img_03`), 각 3×3 정수 배열 |
 | `filters` | `dict[str, list[list[int]]]` | 비교 기준 필터 3개 (`cross`, `block`, `line`), 각 3×3 정수 배열 |
 | `labels` | `dict[str, str]` | 패턴별 정답 라벨 |
 
