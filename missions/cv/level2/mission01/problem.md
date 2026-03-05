@@ -123,14 +123,36 @@
 
 ---
 
-### [ 제출 방식 ]
+### [ 제출물 구조 ]
 
 아래 **5개 파일**을 제출하시오.
 
-| 파일 | 설명 |
-|------|------|
-| `conv2d.py` | 2D 컨볼루션 및 엣지 검출 구현 |
-| `counter.py` | 박스 카운팅 파이프라인 구현 |
-| `metrics.py` | 성능 지표 계산 및 한계 분석 |
-| `main.py` | 전체 파이프라인 실행 |
-| `result_q3.json` | 실행 결과 JSON |
+```
+submission/
+├── conv2d.py           # Part A: 2D 컨볼루션 및 엣지 검출
+│   ├── conv2d()                  — NumPy 기반 2D 컨볼루션 (valid 모드)
+│   ├── to_grayscale()            — RGB → 그레이스케일 변환
+│   └── compute_edge_magnitude()  — Sobel 엣지 크기 계산
+│
+├── counter.py          # Part B: 박스 카운팅 파이프라인
+│   ├── THRESHOLD, MIN_AREA       — 하이퍼파라미터 변수
+│   └── count_boxes()             — 이미지 → 박스 개수 반환
+│       (conv2d.py의 to_grayscale, compute_edge_magnitude를 import하여 사용)
+│
+├── metrics.py          # Part C: 성능 지표 및 한계 분석
+│   ├── compute_metrics()         — 카테고리별 MAE, Accuracy 계산
+│   ├── find_worst_case()         — 오차가 가장 큰 이미지 탐색
+│   ├── get_failure_reasons()     — 규칙 기반 실패 원인 3가지 이상 (한국어)
+│   └── get_why_learning_based()  — 학습 기반 필요성 서술 (한국어)
+│
+├── main.py             # 전체 파이프라인 실행
+│   └── main()                    — labels 로드 → 카운팅 → 메트릭 → JSON 저장
+│       (counter.py, metrics.py를 import하여 사용)
+│
+└── result_q3.json      # 실행 결과
+    ├── predictions                — 이미지별 예측 박스 개수
+    ├── metrics                    — easy/medium/hard별 MAE, Accuracy
+    ├── worst_case_image           — 최대 오차 이미지 이름
+    ├── failure_reasons            — 규칙 기반 실패 원인 목록
+    └── why_learning_based         — 학습 기반 필요성 서술
+```
