@@ -87,8 +87,6 @@
 | `data/images/` | `easy_01.png` ~ `easy_05.png`, `medium_01.png` ~ `medium_05.png`, `hard_01.png` ~ `hard_05.png` (640x480 RGB) |
 | `data/labels.json` | `{"easy_01": 3, "easy_02": 5, ...}` 형태 |
 
-> **주의**: `labels.json`에는 `test_01` 키가 포함되어 있으나, 해당 이미지 파일은 존재하지 않습니다. 실제 이미지 파일이 있는 항목만 처리해야 합니다.
-
 ---
 
 ### [ 출력 형식 ]
